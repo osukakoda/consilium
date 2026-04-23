@@ -12,10 +12,44 @@ const ERROR_MESSAGES = {
   default: 'Something went wrong. Please try again.',
 }
 
+// ── Client-side mock (used when VITE_USE_MOCK=true or in dev without vercel) ──
+
+const MOCK_RESPONSES = {
+  reflective: {
+    reframe: 'This situation is an invitation to examine what you truly value.',
+    perspective: 'Sit with the discomfort rather than rushing to resolve it. Clarity often emerges not from thinking harder, but from pausing long enough to hear what you already know.',
+    action: 'Write down the three outcomes you fear most, then ask yourself why each one scares you.',
+  },
+  blunt: {
+    reframe: "You already know what to do — you're looking for permission that no one else can give you.",
+    perspective: "Every day you delay is itself a choice. You're not avoiding the decision; you're making it slowly and painfully. Stop waiting for certainty that will never arrive.",
+    action: 'Set a deadline — 48 hours — write your decision down, and tell one person about it.',
+  },
+  practical: {
+    reframe: 'This is a resource allocation problem with incomplete but sufficient information.',
+    perspective: "You don't need more data — you need a framework. List your two or three realistic options, estimate the cost of being wrong on each, and weight them against your actual priorities.",
+    action: 'Build a simple table: options as rows, your top three criteria as columns. Score each and pick the winner.',
+  },
+}
+
+function mockClassify(situation) {
+  const s = situation.toLowerCase()
+  if (['can\'t decide','keep putting','procrastin','stuck','afraid to'].some(w => s.includes(w))) return 'blunt'
+  if (['job','career','salary','money','invest','offer','contract','budget','choose between'].some(w => s.includes(w))) return 'practical'
+  return 'reflective'
+}
+
+async function localMock(text) {
+  await new Promise(r => setTimeout(r, 800))
+  return { classification: mockClassify(text), responses: MOCK_RESPONSES }
+}
+
+const USE_MOCK = import.meta.env.DEV
+
 function getInitialTheme() {
   const stored = localStorage.getItem('consilium-theme')
   if (stored === 'light' || stored === 'dark') return stored
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 export default function App() {
@@ -25,10 +59,19 @@ export default function App() {
   const [autoLoading, setAutoLoading] = useState(false)
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
+  const [splash, setSplash] = useState(
+    () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
   const [screen, setScreen] = useState('input')
   const [theme, setTheme] = useState(getInitialTheme)
   const [offline, setOffline] = useState(!navigator.onLine)
   const abortRef = useRef(null)
+
+  useEffect(() => {
+    if (!splash) return
+    const timer = setTimeout(() => setSplash(false), 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -68,16 +111,17 @@ export default function App() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/api/advise', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ situation: text }),
-      })
-      const json = await res.json()
-      if (!res.ok) {
-        const errorType = json.errorType || 'default'
-        throw new Error(ERROR_MESSAGES[errorType] || ERROR_MESSAGES.default)
-      }
+      const json = USE_MOCK
+        ? await localMock(text)
+        : await fetch('/api/advise', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ situation: text }),
+          }).then(async res => {
+            const data = await res.json()
+            if (!res.ok) throw new Error(ERROR_MESSAGES[data.errorType] || ERROR_MESSAGES.default)
+            return data
+          })
       setData(json)
       setScreen(goToShare ? 'share' : 'response')
     } catch (err) {
@@ -104,18 +148,24 @@ export default function App() {
     setWaiting(true)
     setError(null)
 
-    fetch('/api/advise', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ situation }),
-      signal: abortRef.current.signal,
-    })
-      .then(async res => {
-        const json = await res.json()
-        if (!res.ok) {
-          const errorType = json.errorType || 'default'
-          throw new Error(ERROR_MESSAGES[errorType] || ERROR_MESSAGES.default)
-        }
+    const signal = abortRef.current.signal
+
+    const request = USE_MOCK
+      ? localMock(situation)
+      : fetch('/api/advise', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ situation }),
+          signal,
+        }).then(async res => {
+          const data = await res.json()
+          if (!res.ok) throw new Error(ERROR_MESSAGES[data.errorType] || ERROR_MESSAGES.default)
+          return data
+        })
+
+    request
+      .then(json => {
+        if (signal.aborted) return
         setData(json)
         setWaiting(false)
       })
@@ -156,6 +206,20 @@ export default function App() {
   function handleRetryOffline() {
     setOffline(false)
     if (situation.trim()) fetchAdvice(situation)
+  }
+
+  // ── Splash screen ──
+  if (splash) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <p
+          className="serif splash-wordmark"
+          style={{ fontSize: '22px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--muted)', lineHeight: '28px', margin: 0 }}
+        >
+          Consilium
+        </p>
+      </div>
+    )
   }
 
   // ── Offline screen ──
@@ -215,22 +279,7 @@ export default function App() {
   // ── Input screen — vertically centred ──
   if (screen === 'input') {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <div className="px-5 sm:px-12 lg:px-[72px] pt-6 sm:pt-8">
-          <p
-            className="serif"
-            style={{
-              fontSize: '22px',
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-              color: 'var(--muted)',
-              lineHeight: '28px',
-              margin: 0,
-            }}
-          >
-            Consilium
-          </p>
-        </div>
+      <div className="input-fade-in" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <div
           className="px-5 sm:px-12 lg:px-[72px] pb-10 sm:pb-[60px]"
           style={{

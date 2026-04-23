@@ -34,52 +34,40 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100vh' }}>
 
-      {/* Header: wordmark + truncated situation */}
+      {/* Header: wordmark only */}
       <div className="px-5 sm:px-12 lg:px-[72px] pt-6 sm:pt-8">
         <p
           className="serif"
+          onClick={onBack}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           style={{
-            fontSize: '22px',
+            fontSize: '16px',
             fontWeight: 600,
             letterSpacing: '-0.01em',
-            color: 'var(--muted)',
-            lineHeight: '28px',
+            color: 'var(--text)',
+            lineHeight: '20px',
             margin: 0,
+            cursor: 'pointer',
+            transition: 'opacity 0.15s ease',
           }}
         >
           Consilium
-        </p>
-        <p
-          className={`situation-header${phase === 'beat2' || phase === 'beat3' ? ' situation-header--visible' : ''}`}
-          style={{
-            fontSize: '14px',
-            lineHeight: 1.4,
-            letterSpacing: '-0.02em',
-            color: 'var(--accent)',
-            fontWeight: 400,
-            margin: '4px 0 0',
-            maxWidth: '493px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {truncate(situation)}
         </p>
       </div>
 
       {/* Content area — vertically centred */}
       <div
-        className="px-5 sm:px-12 lg:px-[72px] pt-10 sm:pt-14 pb-20 sm:pb-40"
+        className={`px-5 sm:px-12 lg:px-[72px] pt-10 sm:pt-14 pb-20 sm:pb-40 response-content-area${phase === 'beat3' ? ' response-content-area--beat3' : ''}`}
         style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
           flex: 1,
         }}
       >
         <div
+          className={phase === 'beat3' ? 'response-inner-column--beat3' : undefined}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -99,6 +87,22 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
           {/* Beat 3: response content fades in staggered */}
           {phase === 'beat3' && response && (
             <>
+              {/* Situation truncation — context for the response */}
+              <p
+                className="response-enter"
+                style={{
+                  fontSize: '16px',
+                  lineHeight: 1.4,
+                  letterSpacing: '-0.005em',
+                  color: 'var(--accent)',
+                  fontWeight: 400,
+                  margin: 0,
+                  fontFamily: 'inherit',
+                }}
+              >
+                {truncate(situation)}
+              </p>
+
               {/* Response text */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -107,7 +111,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     className="serif-body response-enter"
                     style={{
                       fontSize: 'clamp(20px, 3vw, 24px)',
-                      fontWeight: 400,
+                      fontWeight: 600,
                       lineHeight: 1.33,
                       letterSpacing: '-0.005em',
                       color: 'var(--text)',
@@ -140,7 +144,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'stretch',
-                    gap: '16px',
+                    gap: '20px',
                     paddingTop: '8px',
                   }}
                 >
@@ -172,7 +176,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
 
               {/* Mode selector + compare */}
               <div
-                className="response-enter response-enter--delay-3"
+                className="response-enter response-enter--delay-3 response-tabs--beat3"
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
@@ -197,6 +201,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                       border: active === t ? 'none' : '1px solid var(--pill-inactive-border)',
                       background: active === t ? 'var(--pill-active-bg)' : 'var(--pill-inactive-bg)',
                       color: active === t ? 'var(--pill-active-text)' : 'var(--pill-inactive-text)',
+                      boxShadow: 'none',
                       fontSize: '13px',
                       fontWeight: 500,
                       letterSpacing: '0.01em',
@@ -204,6 +209,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       textTransform: 'capitalize',
+                      whiteSpace: 'nowrap',
                     }}
                   >
                     {t}

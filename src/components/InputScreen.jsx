@@ -20,9 +20,27 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
         alignItems: 'stretch',
         width: '640px',
         maxWidth: '100%',
-        gap: '32px',
+        gap: '8px',
       }}
     >
+      {/* Wordmark */}
+      <p
+        className="serif animate-fade-up"
+        style={{
+          fontSize: '24px',
+          fontWeight: 600,
+          letterSpacing: '-0.01em',
+          lineHeight: '30px',
+          color: 'var(--accent)',
+          margin: 0,
+        }}
+      >
+        Consilium
+      </p>
+
+      {/* Heading + card group */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+
       {/* Heading */}
       <div className="animate-fade-up">
         <h2
@@ -55,7 +73,7 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
           display: 'flex',
           flexDirection: 'column',
           borderRadius: '16px',
-          padding: '20px 20px 16px',
+          padding: '26px 28px 20px',
           backgroundColor: 'var(--card)',
           boxShadow: '0 1px 0 rgba(31, 28, 24, 0.02)',
         }}
@@ -139,6 +157,8 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
             </svg>
           </button>
         </div>
+      </div>
+
       </div>
     </div>
   )

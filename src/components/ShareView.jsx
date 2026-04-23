@@ -103,10 +103,13 @@ export default function ShareView({ data, situation, onBack }) {
         minHeight: '100vh',
       }}
     >
-      {/* Header: wordmark + truncated situation */}
+      {/* Header: wordmark only */}
       <div className="animate-fade-up px-5 sm:px-12 lg:px-[72px] pt-6 sm:pt-8">
         <p
           className="serif"
+          onClick={onBack}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           style={{
             fontSize: '22px',
             fontWeight: 600,
@@ -114,26 +117,11 @@ export default function ShareView({ data, situation, onBack }) {
             color: 'var(--muted)',
             lineHeight: '28px',
             margin: 0,
+            cursor: 'pointer',
+            transition: 'opacity 0.15s ease',
           }}
         >
           Consilium
-        </p>
-        <p
-          style={{
-            fontSize: '14px',
-            lineHeight: 1.4,
-            letterSpacing: '-0.02em',
-            color: 'var(--accent)',
-            opacity: 0.5,
-            fontWeight: 400,
-            margin: '4px 0 0',
-            maxWidth: '493px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {situation}
         </p>
       </div>
 

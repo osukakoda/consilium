@@ -1,7 +1,30 @@
 @import "tailwindcss";
 
-/* ── Dark theme (default) ───────────────────────────────────── */
+/* ── Light theme (default) ──────────────────────────────────── */
 :root {
+  --bg: #f0ede8;
+  --surface: #e8e4dd;
+  --card: #faf8f5;
+  --border: #d5d0c8;
+  --text: #1f1c18;
+  --text-secondary: #7c7b79;
+  --muted: #686561;
+  --accent: #b89a6e;
+  --error: #a54e35;
+  --error-border: #a54e35;
+  --pill-active-bg: #1f1c18;
+  --pill-active-text: #faf8f5;
+  --pill-inactive-bg: #b89a6e;
+  --pill-inactive-text: #faf8f5;
+  --pill-inactive-border: transparent;
+  --compare-pill-border: #b89a6e;
+  --compare-pill-text: #b89a6e;
+  --submit-bg: #b89a6e;
+  --submit-arrow: #faf8f5;
+}
+
+/* ── Dark theme ─────────────────────────────────────────────── */
+[data-theme="dark"] {
   --bg: #1c1a18;
   --surface: #242220;
   --card: #23211e;
@@ -21,29 +44,6 @@
   --compare-pill-text: #b89a6e;
   --submit-bg: #b89a6e;
   --submit-arrow: #1c1a18;
-}
-
-/* ── Light theme ────────────────────────────────────────────── */
-[data-theme="light"] {
-  --bg: #f0ede8;
-  --surface: #e8e4dd;
-  --card: #faf8f5;
-  --border: #d5d0c8;
-  --text: #1f1c18;
-  --text-secondary: #7c7b79;
-  --muted: #686561;
-  --accent: #b89a6e;
-  --error: #a54e35;
-  --error-border: #a54e35;
-  --pill-active-bg: #505050;
-  --pill-active-text: #faf8f5;
-  --pill-inactive-bg: transparent;
-  --pill-inactive-text: #a8a198;
-  --pill-inactive-border: #d5d0c8;
-  --compare-pill-border: #b89a6e;
-  --compare-pill-text: #b89a6e;
-  --submit-bg: #b89a6e;
-  --submit-arrow: #faf8f5;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -185,3 +185,38 @@ body {
 .response-enter--delay-1 { animation-delay: 0.2s; }
 .response-enter--delay-2 { animation-delay: 0.4s; }
 .response-enter--delay-3 { animation-delay: 0.6s; }
+
+/* ── Splash screen ──────────────────────────────────────────── */
+@keyframes splash-sequence {
+  0%   { opacity: 0; animation-timing-function: ease-out; }
+  20%  { opacity: 1; animation-timing-function: linear; }
+  80%  { opacity: 1; animation-timing-function: ease-out; }
+  100% { opacity: 0; }
+}
+
+.splash-wordmark {
+  opacity: 0;
+  animation: splash-sequence 2s linear forwards;
+}
+
+.input-fade-in {
+  opacity: 0;
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+/* ── Response screen — Variant B: flex tab anchor (desktop) ─── */
+.response-content-area {
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .response-content-area--beat3 {
+    justify-content: flex-start;
+  }
+  .response-inner-column--beat3 {
+    flex: 1;
+  }
+  .response-tabs--beat3 {
+    margin-top: auto;
+  }
+}

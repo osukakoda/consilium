@@ -11,7 +11,7 @@ export default function ErrorBanner({ message }) {
         padding: '8px 16px',
         gap: '4px',
         width: 'fit-content',
-        outline: '1px solid var(--error-border)',
+        backgroundColor: '#A54E351A',
       }}
     >
       <p style={{
