@@ -1,1 +1,187 @@
 @import "tailwindcss";
+
+/* ── Dark theme (default) ───────────────────────────────────── */
+:root {
+  --bg: #1c1a18;
+  --surface: #242220;
+  --card: #23211e;
+  --border: #33302b;
+  --text: #ede8dc;
+  --text-secondary: #a8a198;
+  --muted: #686561;
+  --accent: #b89a6e;
+  --error: #a54e35;
+  --error-border: #a54e35;
+  --pill-active-bg: #ede8dc;
+  --pill-active-text: #1c1a18;
+  --pill-inactive-bg: transparent;
+  --pill-inactive-text: #a8a198;
+  --pill-inactive-border: #33302b;
+  --compare-pill-border: #b89a6e;
+  --compare-pill-text: #b89a6e;
+  --submit-bg: #b89a6e;
+  --submit-arrow: #1c1a18;
+}
+
+/* ── Light theme ────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg: #f0ede8;
+  --surface: #e8e4dd;
+  --card: #faf8f5;
+  --border: #d5d0c8;
+  --text: #1f1c18;
+  --text-secondary: #7c7b79;
+  --muted: #686561;
+  --accent: #b89a6e;
+  --error: #a54e35;
+  --error-border: #a54e35;
+  --pill-active-bg: #505050;
+  --pill-active-text: #faf8f5;
+  --pill-inactive-bg: transparent;
+  --pill-inactive-text: #a8a198;
+  --pill-inactive-border: #d5d0c8;
+  --compare-pill-border: #b89a6e;
+  --compare-pill-text: #b89a6e;
+  --submit-bg: #b89a6e;
+  --submit-arrow: #faf8f5;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::placeholder { color: var(--text-secondary); opacity: 1; }
+::selection { background: var(--accent); color: var(--bg); }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes dot-pulse {
+  0%, 80%, 100% { opacity: 0.2; }
+  40%           { opacity: 1; }
+}
+
+.animate-fade-up {
+  opacity: 0;
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fade-in 0.35s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.08s; }
+.delay-2 { animation-delay: 0.16s; }
+.delay-3 { animation-delay: 0.24s; }
+
+.serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.serif-body {
+  font-family: 'Cormorant', Georgia, serif;
+}
+
+.dot-pulse span {
+  display: inline-block;
+  animation: dot-pulse 1.4s ease-in-out infinite;
+}
+.dot-pulse span:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse span:nth-child(3) { animation-delay: 0.4s; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── Waiting state: situation text pulse ────────────────────── */
+@keyframes situation-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.situation-centred {
+  font-size: clamp(17px, 2.5vw, 20px);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: var(--text);
+  text-align: center;
+  max-width: 560px;
+  margin: 0;
+  transition: color 0.3s ease-in-out, opacity 0.2s ease-out;
+}
+
+.situation-pulse {
+  animation: situation-pulse 1.5s ease-in-out infinite;
+}
+
+.situation-centred--gold {
+  color: var(--accent);
+}
+
+.situation-centred--exiting {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .situation-centred {
+    transition: color 0.3s ease-in-out, opacity 0.2s ease-out, transform 0.2s ease-out;
+  }
+  .situation-centred--exiting {
+    transform: translateY(-8px);
+  }
+}
+
+/* Header situation text — fades in at beat2 */
+.situation-header {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+.situation-header--visible {
+  opacity: 1;
+}
+
+/* ── Response section enter animations ──────────────────────── */
+@keyframes response-enter-opacity {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.response-enter {
+  opacity: 0;
+  animation: response-enter-opacity 0.4s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes response-enter-full {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .response-enter {
+    animation: response-enter-full 0.4s ease-out forwards;
+  }
+}
+
+.response-enter--delay-1 { animation-delay: 0.2s; }
+.response-enter--delay-2 { animation-delay: 0.4s; }
+.response-enter--delay-3 { animation-delay: 0.6s; }
