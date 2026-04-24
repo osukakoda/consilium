@@ -218,5 +218,34 @@ body {
   }
   .response-tabs--beat3 {
     margin-top: auto;
+    padding: 4px;
+  }
+}
+
+/* ── Response screen — mobile sticky footer ─────────────────── */
+@media (max-width: 767px) {
+  .response-tabs--beat3 {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 64px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 10px 20px 12px;
+    z-index: 10;
+  }
+  .response-tabs--beat3 button {
+    min-height: 44px;
+  }
+  .compare-modes-btn {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .response-tabs--beat3 {
+    animation: none;
+    opacity: 1;
   }
 }

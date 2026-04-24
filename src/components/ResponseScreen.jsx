@@ -184,7 +184,6 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   justifyContent: 'center',
                   flexWrap: 'wrap',
                   gap: '8px',
-                  padding: '4px',
                   alignSelf: 'stretch',
                 }}
               >
@@ -216,31 +215,33 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   </button>
                 ))}
 
-                <button
-                  onClick={onCompare}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '999px',
-                    padding: '8px 16px',
-                    gap: '4px',
-                    border: '1px solid var(--compare-pill-border)',
-                    background: 'transparent',
-                    color: 'var(--compare-pill-text)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    letterSpacing: '0.01em',
-                    lineHeight: '16px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s',
-                  }}
-                >
-                  Compare modes
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
+                <div className="compare-modes-btn">
+                  <button
+                    onClick={onCompare}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: '999px',
+                      padding: '8px 16px',
+                      gap: '4px',
+                      border: '1px solid var(--compare-pill-border)',
+                      background: 'transparent',
+                      color: 'var(--compare-pill-text)',
+                      fontSize: '13px',
+                      fontWeight: 500,
+                      letterSpacing: '0.01em',
+                      lineHeight: '16px',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                    }}
+                  >
+                    Compare modes
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
             </>
           )}
