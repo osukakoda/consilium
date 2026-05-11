@@ -13,8 +13,8 @@ function Column({ tone, response }) {
       {/* Tone header — gold */}
       <p
         style={{
-          fontSize: '14px',
-          lineHeight: 1.4,
+          fontSize: 'var(--text-s)',
+          lineHeight: 'var(--leading-tight)',
           letterSpacing: '-0.02em',
           color: 'var(--accent)',
           fontWeight: 400,
@@ -31,9 +31,9 @@ function Column({ tone, response }) {
         <p
           className="serif-body"
           style={{
-            fontSize: '16px',
+            fontSize: 'var(--text-base)',
             fontWeight: 400,
-            lineHeight: 1.4,
+            lineHeight: 'var(--leading-reading)',
             color: 'var(--text)',
             margin: 0,
           }}
@@ -44,9 +44,9 @@ function Column({ tone, response }) {
         {/* Stoic paragraph */}
         <p
           style={{
-            fontSize: '14px',
+            fontSize: 'var(--text-base)',
             fontWeight: 400,
-            lineHeight: 1.5,
+            lineHeight: 'var(--leading-reading)',
             color: 'var(--text)',
             margin: 0,
           }}
@@ -76,10 +76,10 @@ function Column({ tone, response }) {
         <p
           className="serif-body"
           style={{
-            fontSize: 'clamp(20px, 3vw, 24px)',
+            fontSize: 'var(--text-xl)',
             fontWeight: 600,
             fontStyle: 'italic',
-            lineHeight: 1.24,
+            lineHeight: 'var(--leading-display)',
             letterSpacing: '-0.002em',
             color: 'var(--text)',
             margin: 0,
@@ -111,11 +111,11 @@ export default function ShareView({ data, situation, onBack }) {
           onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
           onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           style={{
-            fontSize: '22px',
+            fontSize: 'var(--text-m)',
             fontWeight: 600,
             letterSpacing: '-0.01em',
             color: 'var(--muted)',
-            lineHeight: '28px',
+            lineHeight: 'var(--leading-tight)',
             margin: 0,
             cursor: 'pointer',
             transition: 'opacity 0.15s ease',

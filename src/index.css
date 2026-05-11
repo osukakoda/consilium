@@ -21,6 +21,21 @@
   --compare-pill-text: #b89a6e;
   --submit-bg: #b89a6e;
   --submit-arrow: #faf8f5;
+
+  /* ── Type scale — Major Third (1.25×) at 16px base ─────────── */
+  --text-xs: 13px;
+  --text-s: 15px;
+  --text-base: 16px;
+  --text-m: 20px;
+  --text-l: clamp(20px, 3vw, 25px);
+  --text-xl: clamp(20px, 5vw, 32px);
+
+  /* ── Line heights ───────────────────────────────────────────── */
+  --leading-tight: 1.3;
+  --leading-base: 1.5;
+  --leading-reading: 1.6;
+  --leading-reading-mobile: 1.65;
+  --leading-display: 1.24;
 }
 
 /* ── Dark theme ─────────────────────────────────────────────── */
@@ -119,8 +134,8 @@ body {
 }
 
 .situation-centred {
-  font-size: clamp(17px, 2.5vw, 20px);
-  line-height: 1.55;
+  font-size: var(--text-m);
+  line-height: var(--leading-reading);
   letter-spacing: -0.01em;
   font-weight: 400;
   color: var(--text);
@@ -222,8 +237,23 @@ body {
   }
 }
 
+/* ── Response screen — type scale classes ───────────────────── */
+.response-perspective {
+  line-height: var(--leading-reading);
+}
+
+.response-sections {
+  gap: 32px;
+}
+
 /* ── Response screen — mobile sticky footer ─────────────────── */
 @media (max-width: 767px) {
+  .response-perspective {
+    line-height: var(--leading-reading-mobile);
+  }
+  .response-sections {
+    gap: 24px;
+  }
   .response-tabs--beat3 {
     position: fixed;
     bottom: 0;

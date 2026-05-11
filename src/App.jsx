@@ -214,7 +214,7 @@ export default function App() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         <p
           className="serif splash-wordmark"
-          style={{ fontSize: '22px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--muted)', lineHeight: '28px', margin: 0 }}
+          style={{ fontSize: 'var(--text-m)', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--muted)', lineHeight: 'var(--leading-tight)', margin: 0 }}
         >
           Consilium
         </p>
@@ -227,7 +227,7 @@ export default function App() {
     return (
       <div className="mx-auto px-5 sm:px-6 pt-12 pb-16 sm:pt-16 sm:pb-20" style={{ maxWidth: '640px' }}>
         <div className="flex items-center justify-between mb-12 sm:mb-16">
-          <p className="serif" style={{ fontSize: '22px', fontWeight: 600, color: 'var(--muted)', letterSpacing: '-0.01em' }}>
+          <p className="serif" style={{ fontSize: 'var(--text-m)', fontWeight: 600, color: 'var(--muted)', letterSpacing: '-0.01em', lineHeight: 'var(--leading-tight)' }}>
             Consilium
           </p>
           <ThemeToggle theme={theme} onToggle={toggleTheme} />
@@ -247,7 +247,7 @@ export default function App() {
     return (
       <div className="mx-auto px-5 sm:px-6 pt-12 pb-16 sm:pt-16 sm:pb-20" style={{ maxWidth: '640px' }}>
         <div className="flex items-center justify-between mb-12 sm:mb-16">
-          <p className="serif" style={{ fontSize: '22px', fontWeight: 600, color: 'var(--muted)', letterSpacing: '-0.01em' }}>
+          <p className="serif" style={{ fontSize: 'var(--text-m)', fontWeight: 600, color: 'var(--muted)', letterSpacing: '-0.01em', lineHeight: 'var(--leading-tight)' }}>
             Consilium
           </p>
           <ThemeToggle theme={theme} onToggle={toggleTheme} />

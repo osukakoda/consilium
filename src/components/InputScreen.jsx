@@ -27,10 +27,10 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
       <p
         className="serif animate-fade-up"
         style={{
-          fontSize: '24px',
+          fontSize: 'var(--text-m)',
           fontWeight: 600,
           letterSpacing: '-0.01em',
-          lineHeight: '30px',
+          lineHeight: 'var(--leading-tight)',
           color: 'var(--accent)',
           margin: 0,
         }}
@@ -97,8 +97,8 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
             resize: 'none',
             width: '100%',
             minHeight: '84px',
-            fontSize: '18px',
-            lineHeight: 1.4,
+            fontSize: 'var(--text-base)',
+            lineHeight: 'var(--leading-base)',
             caretColor: 'var(--accent)',
             fontFamily: 'inherit',
             fontWeight: 400,
@@ -120,8 +120,9 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
           {/* Character count — only visible when typing */}
           <span
             style={{
-              fontSize: '13px',
+              fontSize: 'var(--text-xs)',
               fontWeight: 400,
+              lineHeight: 'var(--leading-tight)',
               color: remaining < 20 ? 'var(--error)' : 'var(--text-secondary)',
               letterSpacing: '0.01em',
               opacity: hasText ? 1 : 0,

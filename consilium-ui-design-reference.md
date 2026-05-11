@@ -95,6 +95,40 @@ This is where Consilium must differentiate. Every major AI product uses the same
 
 ---
 
+## Typography scale [LOCKED]
+
+Major Third (1.25×) at 16px base. All values defined as CSS custom properties in `:root` of `index.css`. Use these tokens throughout — do not hardcode font sizes or line heights.
+
+### Size tokens
+
+| Token | Value | Used for |
+|---|---|---|
+| `--text-xs` | 13px | Character count, small UI labels |
+| `--text-s` | 15px | Mode pills, column headers |
+| `--text-base` | 16px | Body text, input, situation truncation, perspective |
+| `--text-m` | 20px | Wordmarks |
+| `--text-l` | clamp(20px, 3vw, 25px) | Reframe paragraph |
+| `--text-xl` | clamp(20px, 5vw, 32px) | Action line |
+
+### Line height tokens
+
+| Token | Value | Used for |
+|---|---|---|
+| `--leading-tight` | 1.3 | Wordmarks, pills, column headers |
+| `--leading-base` | 1.5 | Input textarea, situation truncation |
+| `--leading-reading` | 1.6 | Reframe, perspective, body prose |
+| `--leading-reading-mobile` | 1.65 | Perspective on narrow viewports (mobile override) |
+| `--leading-display` | 1.24 | Action line (large italic serif) |
+
+### Mobile adjustments
+
+Applied via `@media (max-width: 767px)` in `index.css`:
+
+- `.response-perspective` — `line-height: var(--leading-reading-mobile)` (1.65)
+- `.response-sections` — `gap: 24px` (desktop is 32px)
+
+---
+
 ## Typography [EXPLORING]
 
 **Do this:**

@@ -42,11 +42,11 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
           onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
           onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           style={{
-            fontSize: '16px',
+            fontSize: 'var(--text-m)',
             fontWeight: 600,
             letterSpacing: '-0.01em',
             color: 'var(--text)',
-            lineHeight: '20px',
+            lineHeight: 'var(--leading-tight)',
             margin: 0,
             cursor: 'pointer',
             transition: 'opacity 0.15s ease',
@@ -91,8 +91,8 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
               <p
                 className="response-enter"
                 style={{
-                  fontSize: '16px',
-                  lineHeight: 1.4,
+                  fontSize: 'var(--text-base)',
+                  lineHeight: 'var(--leading-base)',
                   letterSpacing: '-0.005em',
                   color: 'var(--accent)',
                   fontWeight: 400,
@@ -104,15 +104,15 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
               </p>
 
               {/* Response text */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <div className="response-sections" style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <p
                     key={`reframe-${active}`}
-                    className="serif-body response-enter"
+                    className="serif-body response-enter response-reframe"
                     style={{
-                      fontSize: 'clamp(20px, 3vw, 24px)',
+                      fontSize: 'var(--text-l)',
                       fontWeight: 600,
-                      lineHeight: 1.33,
+                      lineHeight: 'var(--leading-reading)',
                       letterSpacing: '-0.005em',
                       color: 'var(--text)',
                       margin: 0,
@@ -122,11 +122,10 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   </p>
                   <p
                     key={`perspective-${active}`}
-                    className="serif-body response-enter response-enter--delay-1"
+                    className="serif-body response-enter response-enter--delay-1 response-perspective"
                     style={{
-                      fontSize: 'clamp(16px, 2.5vw, 18px)',
+                      fontSize: 'var(--text-base)',
                       fontWeight: 400,
-                      lineHeight: 1.33,
                       letterSpacing: '-0.002em',
                       color: 'var(--text)',
                       margin: 0,
@@ -159,10 +158,10 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   <p
                     className="serif-body"
                     style={{
-                      fontSize: 'clamp(24px, 4vw, 32px)',
+                      fontSize: 'var(--text-xl)',
                       fontWeight: 600,
                       fontStyle: 'italic',
-                      lineHeight: 1.24,
+                      lineHeight: 'var(--leading-display)',
                       letterSpacing: '-0.002em',
                       color: 'var(--text)',
                       margin: 0,
@@ -201,10 +200,10 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                       background: active === t ? 'var(--pill-active-bg)' : 'var(--pill-inactive-bg)',
                       color: active === t ? 'var(--pill-active-text)' : 'var(--pill-inactive-text)',
                       boxShadow: 'none',
-                      fontSize: '13px',
+                      fontSize: 'var(--text-s)',
                       fontWeight: 500,
                       letterSpacing: '0.01em',
-                      lineHeight: '16px',
+                      lineHeight: 'var(--leading-tight)',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       textTransform: 'capitalize',

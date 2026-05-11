@@ -450,3 +450,136 @@ and not in question. All three mobile variants were identical.
 3. Ship wordmark as Start over on mobile
 4. Verify error banner, gold action line in Compare, mobile spacing
 5. Begin thinking about Consilium portfolio card title and subtitle
+
+---
+
+## Session log — 11 May 2026
+
+### What was worked on
+
+Two main threads: (1) formalising the typography scale into CSS custom
+properties across the entire app, and (2) planning a Paper → Figma
+migration.
+
+---
+
+### Type scale formalisation
+
+The app was using a mix of hardcoded font-size and line-height values
+across JSX inline styles. This session replaced all of them with a
+formally defined Major Third (1.25×) scale at 16px base, defined as
+CSS custom properties in `:root` of `index.css`.
+
+**Token set defined**
+
+Six size tokens:
+- `--text-xs`: 13px — character count, small UI labels
+- `--text-s`: 15px — mode pills, column headers
+- `--text-base`: 16px — body text, input, situation truncation, perspective
+- `--text-m`: 20px — wordmarks
+- `--text-l`: clamp(20px, 3vw, 25px) — reframe paragraph
+- `--text-xl`: clamp(20px, 5vw, 32px) — action line
+
+Five line-height tokens:
+- `--leading-tight`: 1.3 — wordmarks, pills, column headers
+- `--leading-base`: 1.5 — input textarea, situation truncation
+- `--leading-reading`: 1.6 — reframe, perspective, body prose
+- `--leading-reading-mobile`: 1.65 — perspective on mobile
+- `--leading-display`: 1.24 — action line (large italic serif)
+
+**Files updated**
+- `src/index.css` — tokens added to `:root`
+- `src/App.jsx` — splash, offline, and invalid-link wordmarks
+- `src/components/InputScreen.jsx` — wordmark, textarea, character count
+- `src/components/ResponseScreen.jsx` — all text elements
+- `src/components/ShareView.jsx` — wordmark, column labels, response text
+- `consilium-ui-design-reference.md` — new `## Typography scale [LOCKED]`
+  section added documenting the full scale with usage column and mobile
+  adjustments
+
+**Recurring problem solved**
+Any property that needs a `@media` query override must live in a CSS
+class, not a JSX `style={{}}` inline prop — inline always wins.
+This pattern came up multiple times when implementing mobile overrides
+for `response-perspective`, `response-sections` gap, the sticky footer
+padding, and the Compare modes hide. All resolved by moving the relevant
+property from inline to a CSS class, then overriding that class at the
+breakpoint.
+
+**Decision source:** [Conversation — tested in build]
+
+---
+
+### Paper → Figma migration — plan written
+
+Goal: reproduce the Paper.design screens accurately in Figma as a proper
+component library. Paper is the source of truth — not the live build,
+which may differ.
+
+**Constraints established**
+- Light mode only — no dark mode tokens needed in Figma
+- Mobile screens not yet designed in Paper — desktop only in scope
+- The live build likely does not match Paper; a comparison pass is needed
+  before migration begins
+
+**Known challenge flagged**
+Past attempts have had problems because Paper uses CSS flexbox and Figma
+uses auto-layout. These are conceptually equivalent but have caused
+translation errors before. The plan documents the explicit mapping:
+`flex-direction: row/column` → `layoutMode: HORIZONTAL/VERTICAL`,
+`gap` → `itemSpacing`, `flex: 1` on a child → `layoutGrow: 1`,
+`align-items` → `counterAxisAlignItems`.
+
+**Phase 0 (comparison) before any migration**
+The first step is to compare the Paper design page against the current
+build and present a written diff to Oscar for sign-off. Migration
+begins only after that diff is approved.
+
+Paper URL: `https://app.paper.design/file/01KN31AEJDEBX6C8N5QS858B3G/01KN31AEJDWVYKZ8KBQSRAFA5K`
+Migration plan: `/Users/oscarabizanda/.claude/plans/velvet-gliding-crescent.md`
+
+The Paper MCP server disconnected mid-session. Phase 0 is the first task
+for the next session once Paper MCP is confirmed connected.
+
+**Decision source:** [Conversation — not yet executed]
+
+---
+
+### Decisions made
+
+- Major Third type scale formalised as CSS custom properties [shipped]
+- `consilium-ui-design-reference.md` updated with `## Typography scale [LOCKED]`
+  section — this section is now locked, do not explore alternatives
+- Paper → Figma migration plan written: Phases 0–6, light mode only,
+  desktop only, Phase 0 is a diff approval gate before any migration begins
+- Figma migration target: pixel-accurate with components (not just layout)
+
+---
+
+### Known issues
+
+**Blockers**
+- Paper MCP server disconnects between sessions; must confirm connected
+  at the start of any session that uses it
+- Phase 0 (Paper vs build diff) not yet run — cannot begin migration
+  until this is done and approved
+
+**Polish**
+- Type scale changes committed but not yet tested in production against
+  the live deployed URL — verify clamp values render correctly at
+  various viewport widths
+- Sentence limits not yet tested against live API (carried from 23 April)
+- Error banner position: carried over from 21 April
+- Gold action line in Compare screen live build: carried over
+- Mobile Compare stacked view spacing: carried over
+- Wordmark navigation edge case during loading state: carried over
+
+---
+
+### Next steps
+
+1. Confirm Paper MCP is connected in terminal
+2. Run Phase 0: compare Paper design page against the build, report diff
+3. Oscar approves diff, then begin Phases 1–6 of the migration plan
+4. Test type scale clamp values at narrow/wide viewports in production
+5. Test sentence limits against live API with Blunt scenario
