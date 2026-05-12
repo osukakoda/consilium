@@ -251,7 +251,7 @@ body {
     gap: 24px;
   }
   .response-content-area--beat3 {
-    padding-bottom: calc(128px + env(safe-area-inset-bottom));
+    padding-bottom: calc(192px + env(safe-area-inset-bottom));
   }
   .response-tabs--beat3 {
     position: fixed;

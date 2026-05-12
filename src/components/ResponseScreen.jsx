@@ -167,7 +167,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                 {TONES.map(t => (
                   <button
                     key={t}
-                    onClick={() => setActive(t)}
+                    onClick={() => { setActive(t); window.scrollTo(0, 0) }}
                     style={{
                       display: 'flex',
                       alignItems: 'flex-end',
