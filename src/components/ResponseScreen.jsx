@@ -197,9 +197,10 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     onClick={onCompare}
                     style={{
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '8px 0',
+                      alignItems: 'flex-end',
+                      justifyContent: 'flex-end',
+                      padding: '8px 0 8px 16px',
+                      minHeight: '44px',
                       gap: '4px',
                       border: 'none',
                       background: 'transparent',
@@ -207,7 +208,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                       fontSize: '13px',
                       fontWeight: 500,
                       letterSpacing: '0.01em',
-                      lineHeight: '16px',
+                      lineHeight: 'var(--leading-tight)',
                       cursor: 'pointer',
                       transition: 'opacity 0.2s',
                     }}
