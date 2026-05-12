@@ -263,6 +263,16 @@ body {
     gap: 8px !important;
     z-index: 10;
   }
+  .response-tabs--beat3::before {
+    content: '';
+    position: absolute;
+    top: -56px;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none;
+  }
   .response-tabs--beat3 button {
     min-height: 44px;
   }
