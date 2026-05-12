@@ -149,31 +149,35 @@ export default function ShareView({ data, situation, onBack }) {
         </div>
       </div>
 
-      {/* Start again — solid circle, centred */}
+      {/* Start again — gold pill, centred */}
       <div className="animate-fade-up delay-2 pb-10 sm:pb-14" style={{ display: 'flex', justifyContent: 'center' }}>
         <button
           onClick={onBack}
-          aria-label="Start again"
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '44px',
-            height: '44px',
+            gap: '4px',
             borderRadius: '999px',
-            border: 'none',
+            padding: '8px 16px',
+            border: '1px solid var(--submit-bg)',
             backgroundColor: 'var(--submit-bg)',
+            color: 'var(--submit-arrow)',
+            fontSize: '13px',
+            fontWeight: 500,
+            letterSpacing: '0.01em',
+            lineHeight: '16px',
+            fontFamily: 'inherit',
             cursor: 'pointer',
-            flexShrink: 0,
-            padding: 0,
             transition: 'opacity 0.2s',
           }}
           onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
           onMouseLeave={e => e.currentTarget.style.opacity = '1'}
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8a5 5 0 1 0 1.5-3.5M3 5v3h3" stroke="var(--submit-arrow)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2.5 8A5 5 0 1 0 4 4.5M2.5 2v3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
+          Start again
         </button>
       </div>
     </div>

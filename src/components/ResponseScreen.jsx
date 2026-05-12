@@ -158,10 +158,8 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'center',
                   flexWrap: 'wrap',
-                  gap: '12px',
-                  alignSelf: 'stretch',
+                  gap: '8px',
                 }}
               >
                 {TONES.map(t => (
@@ -172,7 +170,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                       display: 'flex',
                       alignItems: 'flex-end',
                       justifyContent: 'center',
-                      padding: '8px 16px',
+                      padding: '8px 18px',
                       minHeight: '44px',
                       border: 'none',
                       borderBottom: active === t ? '2px solid var(--accent)' : '2px solid transparent',
@@ -192,6 +190,8 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   </button>
                 ))}
 
+                <div className="response-tabs-spacer" />
+
                 <div className="compare-modes-btn">
                   <button
                     onClick={onCompare}
@@ -199,18 +199,17 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderRadius: '999px',
-                      padding: '8px 16px',
+                      padding: '8px 0',
                       gap: '4px',
-                      border: '1px solid var(--compare-pill-border)',
+                      border: 'none',
                       background: 'transparent',
-                      color: 'var(--compare-pill-text)',
+                      color: 'var(--accent)',
                       fontSize: '13px',
                       fontWeight: 500,
                       letterSpacing: '0.01em',
                       lineHeight: '16px',
                       cursor: 'pointer',
-                      transition: 'all 0.2s',
+                      transition: 'opacity 0.2s',
                     }}
                   >
                     Compare modes
