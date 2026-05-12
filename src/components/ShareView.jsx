@@ -99,58 +99,35 @@ export default function ShareView({ data, situation, onBack }) {
       style={{
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         width: '100%',
         minHeight: '100vh',
+        padding: '72px 20px',
       }}
     >
-      {/* Header: wordmark only */}
-      <div className="animate-fade-up px-5 sm:px-12 lg:px-[72px] pt-6 sm:pt-8">
-        <p
-          className="serif"
-          onClick={onBack}
-          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          style={{
-            fontSize: 'var(--text-m)',
-            fontWeight: 600,
-            letterSpacing: '-0.01em',
-            color: 'var(--muted)',
-            lineHeight: 'var(--leading-tight)',
-            margin: 0,
-            cursor: 'pointer',
-            transition: 'opacity 0.15s ease',
-          }}
-        >
-          Consilium
-        </p>
-      </div>
-
-      {/* Three columns — stack on mobile */}
+      {/* Three columns + button, centred as one group */}
       <div
-        className="px-5 sm:px-12 lg:px-[72px] pt-10 sm:pt-14 pb-12 sm:pb-20"
         style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          flex: 1,
+          gap: '72px',
+          width: '1100px',
+          maxWidth: '100%',
         }}
       >
         <div
-          className="animate-fade-up delay-1 flex flex-col md:flex-row gap-10 md:gap-10"
-          style={{
-            width: '1100px',
-            maxWidth: '100%',
-          }}
+          className="animate-fade-up flex flex-col md:flex-row gap-10 md:gap-10"
+          style={{ width: '100%' }}
         >
           {TONES.map(t => (
             <Column key={t} tone={t} response={data.responses[t]} />
           ))}
         </div>
-      </div>
 
-      {/* Start again — gold pill, centred */}
-      <div className="animate-fade-up delay-2 pb-10 sm:pb-14" style={{ display: 'flex', justifyContent: 'center' }}>
+        {/* Start again — gold pill, centred */}
+        <div className="animate-fade-up delay-1" style={{ display: 'flex', justifyContent: 'center' }}>
         <button
           onClick={onBack}
           style={{
@@ -179,6 +156,7 @@ export default function ShareView({ data, situation, onBack }) {
           </svg>
           Start again
         </button>
+        </div>
       </div>
     </div>
   )

@@ -222,18 +222,14 @@ body {
   justify-content: center;
 }
 
-.response-content-area--beat3 {
-  justify-content: flex-start;
-}
 
 @media (min-width: 768px) {
-  .response-inner-column--beat3 {
-    flex: 1;
-    padding-bottom: 32px;
+  .response-sections {
+    min-height: 380px;
   }
   .response-tabs--beat3 {
-    margin-top: auto;
     padding: 0;
+    padding-top: 40px;
     gap: 8px !important;
     flex-wrap: nowrap !important;
   }
@@ -257,6 +253,9 @@ body {
 @media (max-width: 767px) {
   .response-tabs-spacer {
     display: none;
+  }
+  .response-content-area--beat3 {
+    justify-content: flex-start;
   }
   .response-sections {
     gap: 24px;

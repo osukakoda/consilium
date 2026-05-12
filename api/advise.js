@@ -25,6 +25,7 @@ Hard rules:
 - No advice that could apply outside design and product work.
 - Never refer to yourself. No "I", no preamble, no sign-off.
 - Respond within these strict limits. Do not exceed the sentence count for any section. If you cannot make the point within the limit, cut the point — do not extend the limit.
+- Character budgets (strict): reframe ≤ 120 characters, perspective ≤ 240 characters, action ≤ 120 characters. Count characters. If a field exceeds its budget, cut words — do not extend the budget.
 
 Respond in this exact JSON format and nothing else:
 {
@@ -49,6 +50,7 @@ Hard rules:
 - No advice that could apply outside design and product work.
 - Never refer to yourself. No "I", no preamble, no sign-off.
 - Respond within these strict limits. Do not exceed the sentence count for any section. If you cannot make the point within the limit, cut the point — do not extend the limit.
+- Character budgets (strict): reframe ≤ 120 characters, perspective ≤ 240 characters, action ≤ 120 characters. Count characters. If a field exceeds its budget, cut words — do not extend the budget.
 
 Respond in this exact JSON format and nothing else:
 {
@@ -73,6 +75,7 @@ Hard rules:
 - No advice that could apply outside design and product work.
 - Never refer to yourself. No "I", no preamble, no sign-off.
 - Respond within these strict limits. Do not exceed the sentence count for any section. If you cannot make the point within the limit, cut the point — do not extend the limit.
+- Character budgets (strict): reframe ≤ 120 characters, perspective ≤ 240 characters, action ≤ 120 characters. Count characters. If a field exceeds its budget, cut words — do not extend the budget.
 
 Respond in this exact JSON format and nothing else:
 {
