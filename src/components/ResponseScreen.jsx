@@ -36,7 +36,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
 
       {/* Content area — vertically centred */}
       <div
-        className={`px-4 sm:px-12 lg:px-[72px] pt-8 sm:pt-14 pb-20 sm:pb-40 response-content-area${phase === 'beat3' ? ' response-content-area--beat3' : ''}`}
+        className={`px-4 sm:px-12 lg:px-[72px] pt-[72px] sm:pt-14 pb-20 sm:pb-40 response-content-area${phase === 'beat3' ? ' response-content-area--beat3' : ''}`}
         style={{
           display: 'flex',
           flexDirection: 'column',

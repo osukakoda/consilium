@@ -222,10 +222,11 @@ body {
   justify-content: center;
 }
 
+.response-content-area--beat3 {
+  justify-content: flex-start;
+}
+
 @media (min-width: 768px) {
-  .response-content-area--beat3 {
-    justify-content: flex-start;
-  }
   .response-inner-column--beat3 {
     flex: 1;
   }
