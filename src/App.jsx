@@ -6,10 +6,32 @@ import ThemeToggle from './components/ThemeToggle'
 import CenteredMessage from './components/CenteredMessage'
 
 const ERROR_MESSAGES = {
-  content_rejected: "We can't advise on this type of situation. Please describe a personal dilemma, decision, or challenge you're facing.",
-  rate_limited: "You've asked too many questions recently. Take a breath and try again in a few minutes.",
-  network: 'Something went wrong. Please try again.',
-  default: 'Something went wrong. Please try again.',
+  off_topic: "Sorry, that is outside of our expertise. Please describe your situation.",
+  gibberish: "Sorry, we are not sure what to make of that. Please describe your situation.",
+  rate_limited: "Bear with us. Try again in a minute.",
+  network: 'Sorry, something went wrong on our end. Try again in a moment.',
+  default: 'Sorry, something went wrong on our end. Try again in a moment.',
+}
+
+const OFF_TOPIC_PATTERNS = [
+  /write (me )?(a |an )/i,
+  /poem|story|essay|song|joke/i,
+  /translate/i,
+  /code|program|function|script/i,
+  /what is the capital/i,
+  /who (is|was|are)/i,
+  /calculate|solve|equation/i,
+]
+
+function isOffTopic(s) {
+  return OFF_TOPIC_PATTERNS.some(p => p.test(s))
+}
+
+function isGibberish(s) {
+  const letters = s.replace(/[^a-zA-Z]/g, '')
+  if (letters.length === 0) return true
+  const vowels = letters.replace(/[^aeiouAEIOU]/g, '')
+  return vowels.length / letters.length < 0.15
 }
 
 // ── Client-side mock (used when VITE_USE_MOCK=true or in dev without vercel) ──
@@ -139,6 +161,15 @@ export default function App() {
   function handleSubmit() {
     if (!situation.trim()) return
     if (!navigator.onLine) { setOffline(true); return }
+
+    if (isOffTopic(situation)) {
+      setError(ERROR_MESSAGES.off_topic)
+      return
+    }
+    if (isGibberish(situation)) {
+      setError(ERROR_MESSAGES.gibberish)
+      return
+    }
 
     if (abortRef.current) abortRef.current.abort()
     abortRef.current = new AbortController()
@@ -280,15 +311,26 @@ export default function App() {
   if (screen === 'input') {
     return (
       <div className="input-fade-in" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div className="px-4 sm:px-12 lg:px-[72px] pt-8 sm:pt-10">
+          <p
+            className="serif"
+            style={{
+              fontSize: 'var(--text-m)',
+              fontWeight: 600,
+              letterSpacing: '-0.01em',
+              lineHeight: 'var(--leading-tight)',
+              color: 'var(--muted)',
+              margin: 0,
+              opacity: waiting ? 0 : 0.45,
+              transition: 'opacity 0.3s ease',
+            }}
+          >
+            Consilium
+          </p>
+        </div>
         <div
-          className="px-5 sm:px-12 lg:px-[72px] pb-10 sm:pb-[60px]"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-          }}
+          className="px-4 sm:px-12 lg:px-[72px] pb-8 sm:pb-[60px] flex flex-col items-center pt-[28vh] sm:justify-center sm:pt-0"
+          style={{ flex: 1 }}
         >
           <InputScreen
             situation={situation}

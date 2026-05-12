@@ -583,3 +583,61 @@ for the next session once Paper MCP is confirmed connected.
 3. Oscar approves diff, then begin Phases 1–6 of the migration plan
 4. Test type scale clamp values at narrow/wide viewports in production
 5. Test sentence limits against live API with Blunt scenario
+
+---
+
+## Session log — 12 May 2026
+
+### Observation: two primary use contexts
+
+A design conversation surfaced two distinct mental states that users arrive in:
+
+**Scenario 1 — end of day, going home.** The person has had a bad day. They're on their phone, in transit, decompressing. They have space. They'll read slowly, maybe reread. Reflective mode maps closely to this state. The design can breathe.
+
+**Scenario 2 — at work, something just happened.** The person is activated — mid-crisis, typing on their phone in a corridor or at their desk. They can't hold a long paragraph in their head. The action line is probably the only part they'll act on immediately. The reframe and perspective become things they return to later, if at all.
+
+This raises a design question: does the current response hierarchy surface the action line prominently enough for scenario 2, without breaking the experience for scenario 1? No change made. Carried forward as an open question.
+
+---
+
+### Phase 2 idea: two response modes (deferred)
+
+The observation prompted a brief discussion about splitting response modes:
+- Short and immediately actionable — for the activated, at-work state
+- Longer, with pointers to further reading — for the reflective, end-of-day state
+
+Decision: deferred to Phase 2. The current short-response format and sentence constraints serve both cases reasonably. Further exploration only warranted if testing shows the action line is being missed in the activated state.
+
+---
+
+### What was shipped this session
+
+- Error messages rewritten across all four error types — shorter, slightly Stoic register
+- Off-topic and gibberish validation moved to the frontend (before fetch), so no Haiku tokens are spent on rejected input
+- Gibberish detection: vowel-ratio check (< 15% vowels in alphabetic characters) catches random keyboard input
+- `launch.json` updated with `--yes` flag for `vercel dev` to allow preview server to start cleanly
+
+---
+
+### Known issues
+
+**Blockers**
+- Paper MCP server disconnects between sessions (carried from 11 May)
+- Phase 0 (Paper vs build diff) not yet run (carried from 11 May)
+
+**Polish**
+- Type scale clamp values not yet tested in production (carried from 11 May)
+- Sentence limits not yet tested against live API (carried from 23 April)
+- Error banner position (carried from 21 April)
+- Gold action line in Compare screen live build (carried from 21 April)
+- Mobile Compare stacked view spacing (carried from 21 April)
+- Wordmark navigation edge case during loading state (carried from 23 April)
+
+---
+
+### Next steps
+
+1. Confirm Paper MCP connected, run Phase 0 diff
+2. Test type scale clamp values in production
+3. Test sentence limits with live Blunt scenario
+4. Consider whether action line visual weight is sufficient for the activated use context (Scenario 2)

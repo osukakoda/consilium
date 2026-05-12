@@ -34,31 +34,9 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100vh' }}>
 
-      {/* Header: wordmark only */}
-      <div className="px-5 sm:px-12 lg:px-[72px] pt-6 sm:pt-8">
-        <p
-          className="serif"
-          onClick={onBack}
-          onMouseEnter={e => e.currentTarget.style.opacity = '0.6'}
-          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          style={{
-            fontSize: 'var(--text-m)',
-            fontWeight: 600,
-            letterSpacing: '-0.01em',
-            color: 'var(--text)',
-            lineHeight: 'var(--leading-tight)',
-            margin: 0,
-            cursor: 'pointer',
-            transition: 'opacity 0.15s ease',
-          }}
-        >
-          Consilium
-        </p>
-      </div>
-
       {/* Content area — vertically centred */}
       <div
-        className={`px-5 sm:px-12 lg:px-[72px] pt-10 sm:pt-14 pb-20 sm:pb-40 response-content-area${phase === 'beat3' ? ' response-content-area--beat3' : ''}`}
+        className={`px-4 sm:px-12 lg:px-[72px] pt-[72px] sm:pt-14 pb-20 sm:pb-40 response-content-area${phase === 'beat3' ? ' response-content-area--beat3' : ''}`}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -73,7 +51,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
             flexDirection: 'column',
             width: '640px',
             maxWidth: '100%',
-            gap: '40px',
+            gap: '36px',
           }}
         >
 
@@ -112,7 +90,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     style={{
                       fontSize: 'var(--text-l)',
                       fontWeight: 600,
-                      lineHeight: 'var(--leading-reading)',
+                      lineHeight: 1.33,
                       letterSpacing: '-0.005em',
                       color: 'var(--text)',
                       margin: 0,
@@ -124,7 +102,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     key={`perspective-${active}`}
                     className="serif-body response-enter response-enter--delay-1 response-perspective"
                     style={{
-                      fontSize: 'var(--text-base)',
+                      fontSize: '17px',
                       fontWeight: 400,
                       letterSpacing: '-0.002em',
                       color: 'var(--text)',
@@ -143,7 +121,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'stretch',
-                    gap: '20px',
+                    gap: '16px',
                     paddingTop: '8px',
                   }}
                 >
@@ -180,7 +158,6 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'center',
                   flexWrap: 'wrap',
                   gap: '8px',
                   alignSelf: 'stretch',
@@ -189,23 +166,23 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                 {TONES.map(t => (
                   <button
                     key={t}
-                    onClick={() => setActive(t)}
+                    onClick={() => { setActive(t); window.scrollTo(0, 0) }}
                     style={{
                       display: 'flex',
-                      alignItems: 'center',
+                      alignItems: 'flex-end',
                       justifyContent: 'center',
-                      borderRadius: '999px',
-                      padding: '8px 16px',
-                      border: active === t ? 'none' : '1px solid var(--pill-inactive-border)',
-                      background: active === t ? 'var(--pill-active-bg)' : 'var(--pill-inactive-bg)',
-                      color: active === t ? 'var(--pill-active-text)' : 'var(--pill-inactive-text)',
-                      boxShadow: 'none',
-                      fontSize: 'var(--text-s)',
-                      fontWeight: 500,
+                      padding: '8px 18px',
+                      minHeight: '44px',
+                      border: 'none',
+                      borderBottom: active === t ? '2px solid var(--accent)' : '2px solid transparent',
+                      background: 'transparent',
+                      color: active === t ? 'var(--text)' : 'var(--text-secondary)',
+                      fontSize: 'var(--text-xs)',
+                      fontWeight: active === t ? 500 : 400,
                       letterSpacing: '0.01em',
                       lineHeight: 'var(--leading-tight)',
                       cursor: 'pointer',
-                      transition: 'all 0.2s',
+                      transition: 'color 0.2s, border-color 0.2s',
                       textTransform: 'capitalize',
                       whiteSpace: 'nowrap',
                     }}
@@ -214,25 +191,27 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   </button>
                 ))}
 
+                <div className="response-tabs-spacer" />
+
                 <div className="compare-modes-btn">
                   <button
                     onClick={onCompare}
                     style={{
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: '999px',
-                      padding: '8px 16px',
+                      alignItems: 'flex-end',
+                      justifyContent: 'flex-end',
+                      padding: '8px 0 8px 16px',
+                      minHeight: '44px',
                       gap: '4px',
-                      border: '1px solid var(--compare-pill-border)',
+                      border: 'none',
                       background: 'transparent',
-                      color: 'var(--compare-pill-text)',
+                      color: 'var(--accent)',
                       fontSize: '13px',
                       fontWeight: 500,
                       letterSpacing: '0.01em',
-                      lineHeight: '16px',
+                      lineHeight: 'var(--leading-tight)',
                       cursor: 'pointer',
-                      transition: 'all 0.2s',
+                      transition: 'opacity 0.2s',
                     }}
                   >
                     Compare modes
@@ -241,6 +220,18 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     </svg>
                   </button>
                 </div>
+
+                {/* Start again — mobile footer only */}
+                <button
+                  className="response-start-again"
+                  onClick={onBack}
+                  aria-label="Start again"
+                >
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M2.5 8A5 5 0 1 0 4 4.5M2.5 2v3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Start again
+                </button>
               </div>
             </>
           )}

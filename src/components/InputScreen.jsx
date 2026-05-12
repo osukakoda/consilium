@@ -1,12 +1,21 @@
+import { useRef, useEffect } from 'react'
 import ErrorBanner from './ErrorBanner'
 
 const MAX_CHARS = 280
 
 export default function InputScreen({ situation, onChange, onSubmit, loading, error }) {
+  const textareaRef = useRef(null)
   const charCount = situation.length
   const remaining = MAX_CHARS - charCount
   const canSubmit = situation.trim().length > 0 && remaining >= 0 && !loading
   const hasText = charCount > 0
+
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = el.scrollHeight + 'px'
+  }, [situation])
 
   function handleKeyDown(e) {
     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && canSubmit) onSubmit()
@@ -18,26 +27,11 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
-        width: '640px',
+        width: '520px',
         maxWidth: '100%',
         gap: '8px',
       }}
     >
-      {/* Wordmark */}
-      <p
-        className="serif animate-fade-up"
-        style={{
-          fontSize: 'var(--text-m)',
-          fontWeight: 600,
-          letterSpacing: '-0.01em',
-          lineHeight: 'var(--leading-tight)',
-          color: 'var(--accent)',
-          margin: 0,
-        }}
-      >
-        Consilium
-      </p>
-
       {/* Heading + card group */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
@@ -55,7 +49,7 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
             margin: 0,
           }}
         >
-          What's your situation?
+          What are you wrestling with?
         </h2>
       </div>
 
@@ -73,13 +67,14 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
           display: 'flex',
           flexDirection: 'column',
           borderRadius: '16px',
-          padding: '26px 28px 20px',
+          padding: '24px 24px 16px',
           backgroundColor: 'var(--card)',
           boxShadow: '0 1px 0 rgba(31, 28, 24, 0.02)',
         }}
       >
         <textarea
-          rows={3}
+          ref={textareaRef}
+          rows={1}
           maxLength={MAX_CHARS}
           value={situation}
           onChange={e => {
@@ -92,9 +87,11 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
           style={{
             background: 'transparent',
             border: 'none',
+            padding: 0,
             color: 'var(--text)',
             outline: 'none',
             resize: 'none',
+            overflow: 'hidden',
             width: '100%',
             minHeight: '84px',
             fontSize: 'var(--text-base)',
@@ -104,7 +101,6 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
             fontWeight: 400,
             opacity: loading ? 0.5 : 1,
             transition: 'opacity 0.2s',
-            flex: 1,
           }}
         />
 
@@ -132,7 +128,7 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
             {charCount} / {MAX_CHARS}
           </span>
 
-          {/* Circular submit button */}
+          {/* Circular submit button — 44×44 tap zone, 32×32 visual */}
           <button
             onClick={onSubmit}
             disabled={!canSubmit}
@@ -141,11 +137,10 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '999px',
+              width: '44px',
+              height: '44px',
               border: 'none',
-              backgroundColor: 'var(--submit-bg)',
+              background: 'transparent',
               opacity: loading ? 0.4 : hasText ? 1 : 0.5,
               cursor: canSubmit ? 'pointer' : 'default',
               transition: 'opacity 0.2s',
@@ -153,9 +148,20 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
               padding: 0,
             }}
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12" stroke="var(--submit-arrow)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: '999px',
+              backgroundColor: 'var(--submit-bg)',
+              flexShrink: 0,
+            }}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12" stroke="var(--submit-arrow)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
           </button>
         </div>
       </div>
