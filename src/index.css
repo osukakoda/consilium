@@ -250,14 +250,17 @@ body {
   .response-sections {
     gap: 24px;
   }
+  .response-content-area--beat3 {
+    padding-bottom: calc(128px + env(safe-area-inset-bottom));
+  }
   .response-tabs--beat3 {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    min-height: 64px;
     background: var(--bg);
-    padding: 10px 16px max(12px, env(safe-area-inset-bottom));
+    padding: 8px 16px max(8px, env(safe-area-inset-bottom));
+    gap: 8px !important;
     z-index: 10;
   }
   .response-tabs--beat3 button {
@@ -272,8 +275,7 @@ body {
     justify-content: center;
     gap: 8px;
     flex-basis: 100%;
-    min-height: 48px;
-    margin-top: 4px;
+    min-height: 44px;
     background: none;
     border: none;
     color: var(--accent);
