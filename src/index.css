@@ -243,9 +243,6 @@ body {
   }
 }
 
-.response-tabs-spacer {
-  display: none;
-}
 
 /* ── Response screen — type scale classes ───────────────────── */
 .response-perspective {
@@ -258,6 +255,9 @@ body {
 
 /* ── Response screen — mobile sticky footer ─────────────────── */
 @media (max-width: 767px) {
+  .response-tabs-spacer {
+    display: none;
+  }
   .response-sections {
     gap: 24px;
   }

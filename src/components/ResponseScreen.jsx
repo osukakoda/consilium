@@ -160,6 +160,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                   alignItems: 'center',
                   flexWrap: 'wrap',
                   gap: '8px',
+                  alignSelf: 'stretch',
                 }}
               >
                 {TONES.map(t => (
