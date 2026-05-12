@@ -10,7 +10,7 @@
     {
       "name": "Vercel dev (frontend + API)",
       "runtimeExecutable": "vercel",
-      "runtimeArgs": ["dev"],
+      "runtimeArgs": ["dev", "--yes"],
       "port": 3000
     }
   ]

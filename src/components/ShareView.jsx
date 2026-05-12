@@ -149,22 +149,31 @@ export default function ShareView({ data, situation, onBack }) {
         </div>
       </div>
 
-      {/* Back button */}
-      <div className="animate-fade-up delay-2 px-5 sm:px-12 lg:px-[72px] pb-8 sm:pb-10">
+      {/* Start again — solid circle, centred */}
+      <div className="animate-fade-up delay-2 pb-10 sm:pb-14" style={{ display: 'flex', justifyContent: 'center' }}>
         <button
           onClick={onBack}
+          aria-label="Start again"
           style={{
-            background: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '44px',
+            height: '44px',
+            borderRadius: '999px',
             border: 'none',
-            color: 'var(--muted)',
-            fontSize: '13px',
+            backgroundColor: 'var(--submit-bg)',
             cursor: 'pointer',
+            flexShrink: 0,
             padding: 0,
+            transition: 'opacity 0.2s',
           }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}
+          onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+          onMouseLeave={e => e.currentTarget.style.opacity = '1'}
         >
-          ← Start over
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8a5 5 0 1 0 1.5-3.5M3 5v3h3" stroke="var(--submit-arrow)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </button>
       </div>
     </div>

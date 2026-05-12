@@ -26,6 +26,20 @@ Pi is the closest reference point. It was designed as a companion, not a tool. I
 
 ---
 
+## User arrival context [OPEN]
+
+Consilium is a mobile-first experience. Two primary use contexts have been identified:
+
+**Scenario 1 — end of day, going home.** The user has had a bad day. They're on their phone, in transit or winding down. They have space. They'll read slowly, sit with the response, possibly reread it. The reflective mode suits this state. The design can breathe.
+
+**Scenario 2 — at work, something just happened.** The user is activated. They're typing on their phone mid-crisis — in a corridor, at their desk, between meetings. They can't hold a long paragraph. They need one clear thought and one thing to do. The action line is what they'll act on immediately. The rest is processing they may do later.
+
+**Design implication to explore:** the current response hierarchy gives equal visual weight to reframe, perspective, and action. For Scenario 2, the action line may need to land more immediately. The question is whether increased visual weight on the action line serves Scenario 2 without disrupting the reading experience for Scenario 1.
+
+**Not in scope for Phase 1.** The current short-response format and sentence limits serve both contexts adequately. This becomes relevant if a two-mode response system is introduced in Phase 2.
+
+---
+
 ## Background and colour [EXPLORING]
 
 **Do this:**
