@@ -239,7 +239,7 @@ body {
 @media (max-width: 767px) {
   .response-content-area--beat3 {
     justify-content: flex-start;
-    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    padding-bottom: calc(140px + env(safe-area-inset-bottom));
   }
   .response-sections {
     gap: 24px;
