@@ -1,16 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { ChevronDown, RotateCcw, Check, X } from 'lucide-react'
 
 const TONES = ['reflective', 'blunt', 'practical']
+
+const DESCRIPTORS = {
+  reflective: 'The question behind the question',
+  blunt: 'No softening. Just the truth',
+  practical: 'A path forward, not a place to sit',
+}
 
 function truncate(text, maxLen = 72) {
   if (!text || text.length <= maxLen) return text
   return text.slice(0, maxLen) + '…'
 }
 
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 // phase: 'waiting' → 'beat1' (gold, 300ms) → 'beat2' (reposition, 200ms) → 'beat3' (response in)
-export default function ResponseScreen({ data, situation, waiting, onBack, onCompare }) {
+export default function ResponseScreen({ data, situation, waiting, onBack }) {
   const [active, setActive] = useState('reflective')
   const [phase, setPhase] = useState('waiting')
+  const [open, setOpen] = useState(false)
+  const selectorRef = useRef(null)
 
   useEffect(() => {
     if (!waiting && data) {
@@ -22,17 +35,52 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
     }
   }, [waiting, data])
 
+  // Close on click outside (desktop) or Escape (both)
+  useEffect(() => {
+    if (!open) return
+    function onPointerDown(e) {
+      if (selectorRef.current && !selectorRef.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    function onKey(e) { if (e.key === 'Escape') setOpen(false) }
+    // Defer so the click that opened the dropdown doesn't immediately close it
+    const timer = setTimeout(() => {
+      document.addEventListener('pointerdown', onPointerDown)
+      window.addEventListener('keydown', onKey)
+    }, 0)
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  function handleSelect(tone) {
+    setActive(tone)
+    setOpen(false)
+    window.scrollTo(0, 0)
+  }
+
   const response = data?.responses?.[active]
 
   const centredClasses = [
     'situation-centred',
-    phase === 'waiting'                      && 'situation-pulse',
-    (phase === 'beat1' || phase === 'beat2') && 'situation-centred--gold',
-    phase === 'beat2'                        && 'situation-centred--exiting',
+    phase === 'waiting' && 'situation-pulse',
+    phase === 'beat2'   && 'situation-centred--exiting',
   ].filter(Boolean).join(' ')
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100vh' }}>
+
+      {/* Overlay — rendered at root level so it escapes the fixed footer's stacking context */}
+      {open && phase === 'beat3' && (
+        <div
+          className="mode-overlay"
+          onPointerDown={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Content area — vertically centred */}
       <div
@@ -102,8 +150,8 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                     key={`perspective-${active}`}
                     className="serif-body response-enter response-enter--delay-1 response-perspective"
                     style={{
-                      fontSize: '17px',
-                      fontWeight: 400,
+                      fontSize: '19px',
+                      fontWeight: 500,
                       letterSpacing: '-0.002em',
                       color: 'var(--text)',
                       margin: 0,
@@ -151,87 +199,53 @@ export default function ResponseScreen({ data, situation, waiting, onBack, onCom
                 </div>
               </div>
 
-              {/* Mode selector + compare */}
-              <div
-                className="response-enter response-enter--delay-3 response-tabs--beat3"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  flexWrap: 'wrap',
-                  gap: '8px',
-                  alignSelf: 'stretch',
-                }}
-              >
-                {TONES.map(t => (
-                  <button
-                    key={t}
-                    onClick={() => { setActive(t); window.scrollTo(0, 0) }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-end',
-                      justifyContent: 'center',
-                      padding: '8px 18px',
-                      minHeight: '44px',
-                      border: 'none',
-                      borderBottom: active === t ? '2px solid var(--accent)' : '2px solid transparent',
-                      background: 'transparent',
-                      color: active === t ? 'var(--text)' : 'var(--text-secondary)',
-                      fontSize: 'var(--text-xs)',
-                      fontWeight: active === t ? 500 : 400,
-                      letterSpacing: '0.01em',
-                      lineHeight: 'var(--leading-tight)',
-                      cursor: 'pointer',
-                      transition: 'color 0.2s, border-color 0.2s',
-                      textTransform: 'capitalize',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {t}
-                  </button>
-                ))}
+              {/* Mode selector row */}
+              <div ref={selectorRef} className="response-enter response-enter--delay-3 mode-selector-row" style={open ? { zIndex: 100 } : undefined}>
 
-                <div className="response-tabs-spacer" />
-
-                <div className="compare-modes-btn">
-                  <button
-                    onClick={onCompare}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'flex-end',
-                      justifyContent: 'flex-end',
-                      padding: '8px 0 8px 16px',
-                      minHeight: '44px',
-                      gap: '4px',
-                      border: 'none',
-                      background: 'transparent',
-                      color: 'var(--accent)',
-                      fontSize: '13px',
-                      fontWeight: 500,
-                      letterSpacing: '0.01em',
-                      lineHeight: 'var(--leading-tight)',
-                      cursor: 'pointer',
-                      transition: 'opacity 0.2s',
-                    }}
-                  >
-                    Compare modes
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </button>
-                </div>
-
-                {/* Start again — mobile footer only */}
+                {/* Left: current mode + chevron */}
                 <button
-                  className="response-start-again"
-                  onClick={onBack}
-                  aria-label="Start again"
+                  className={`mode-trigger${open ? ' mode-trigger--open' : ''}`}
+                  onClick={() => setOpen(o => !o)}
+                  aria-haspopup="listbox"
+                  aria-expanded={open}
                 >
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2.5 8A5 5 0 1 0 4 4.5M2.5 2v3h3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  {capitalize(active)}
+                  <ChevronDown size={14} strokeWidth={1.8} />
+                </button>
+
+                {/* Right: start again */}
+                <button className="mode-start-again" onClick={onBack}>
+                  <RotateCcw size={14} strokeWidth={1.8} />
                   Start again
                 </button>
+
+                {/* Options — popover on desktop, bottom sheet on mobile */}
+                {open && (
+                  <div className="mode-options" role="listbox">
+                    {/* Close button — mobile sheet only */}
+                    <button className="mode-sheet-close" onClick={() => setOpen(false)} aria-label="Close">
+                      <X size={18} strokeWidth={1.5} />
+                    </button>
+                    {TONES.map(tone => (
+                      <button
+                        key={tone}
+                        className="mode-option-row"
+                        role="option"
+                        aria-selected={active === tone}
+                        onClick={() => handleSelect(tone)}
+                      >
+                        <span className="mode-check-slot">
+                          {active === tone && <Check size={14} strokeWidth={2} />}
+                        </span>
+                        <span className="mode-option-content">
+                          <span className="mode-option-name">{capitalize(tone)}</span>
+                          <span className="mode-option-desc">{DESCRIPTORS[tone]}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+
               </div>
             </>
           )}

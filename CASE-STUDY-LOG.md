@@ -641,3 +641,200 @@ Decision: deferred to Phase 2. The current short-response format and sentence co
 2. Test type scale clamp values in production
 3. Test sentence limits with live Blunt scenario
 4. Consider whether action line visual weight is sufficient for the activated use context (Scenario 2)
+
+---
+
+## Session log — 13 May 2026
+
+### What was worked on
+
+Full design-to-code cycle for a new mode selector pattern. Replaced the
+tab strip on the response screen with a dropdown menu on desktop and a
+bottom sheet on mobile. Designed four states in Paper first, then built
+and iterated until both patterns worked correctly.
+
+---
+
+### Design decision: tab strip → dropdown
+
+The tab strip (Reflective · Blunt · Practical · Compare modes →) was the
+established pattern from April. It worked functionally but raised a UX
+problem: users see the three mode names on arrival, before they've read any
+response. This front-loads a choice they aren't equipped to make yet.
+
+The new pattern defers that reveal. A single label — the classified mode
+name plus a chevron — appears below the response. The user reads first.
+Only when they tap or click does the dropdown open and expose the other
+modes with short descriptors. The choice becomes contextual rather than
+upfront.
+
+The model reference was Claude and ChatGPT's model selectors: a trigger
+button showing the current selection that opens a list of alternatives.
+Familiar pattern, applied to mode switching rather than model switching.
+
+Decision source: [Conversation — informed by competitive reference]
+
+---
+
+### Paper design session
+
+Four states designed before writing any code:
+- Resting state (mode trigger + Start again)
+- Desktop popover open (300px wide, 12px radius, three rows)
+- Mobile resting (fixed footer)
+- Mobile bottom sheet open (full-width, 20px radius top, dark overlay)
+
+Descriptors written for each mode to appear below the mode name in the
+options list:
+- Reflective: "The question behind the question"
+- Blunt: "No softening. Just the truth"
+- Practical: "A path forward, not a place to sit"
+
+Decisions locked in Paper before build began:
+- No dividers between option rows — white space is sufficient
+- Hover state: F0EBE2 background, #3A322B text (warm, not cold grey)
+- Check slot (16px wide, flex-shrink: 0) for the active mode tick
+- Mobile close affordance: X icon top-right of the sheet, not a text label
+
+Decision source: [Paper — tested]
+
+---
+
+### Build: what shipped
+
+**ResponseScreen.jsx — full restructure**
+- Mode selector implemented: trigger button with ChevronDown, options
+  popover/sheet, check mark on active mode, Cancel → X icon (Lucide)
+- Click-outside detection: `document.addEventListener('pointerdown', ...)`
+  with `useRef` on the selector container and `setTimeout(0)` defer.
+  Defer is required because the click that opens the dropdown would
+  otherwise fire the outside-click listener immediately and close it.
+- `window.addEventListener('keydown', ...)` for Escape key dismiss.
+- Overlay rendered at the ROOT level of ResponseScreen's return, outside
+  all content containers. Required to escape the stacking context created
+  by the response-enter animation on the content area wrapper.
+
+**InputScreen.jsx**
+- Enter key now submits. Shift+Enter inserts a newline (browser default).
+  Previously Enter did nothing — the only submit path was the button.
+
+**index.css — mode selector classes**
+- Old tab CSS removed: `.response-tabs--beat3`, `.response-tabs-spacer`,
+  `.compare-modes-btn`, `.response-start-again`
+- New classes added: `.mode-selector-row`, `.mode-trigger`, `.mode-options`,
+  `.mode-option-row`, `.mode-sheet-close`, `.mode-overlay`, etc.
+- Mobile: `.mode-selector-row` becomes `position: fixed; bottom: 0` with
+  `env(safe-area-inset-bottom)` padding and gradient fade above
+- Mobile: `.mode-options` becomes `position: fixed; bottom: 0; border-radius:
+  20px 20px 0 0`; `.mode-overlay` gains background and `pointer-events: auto`
+
+---
+
+### Iterations during build
+
+**Mode trigger label colour**
+Built with `var(--text)` (near-black) initially. Oscar noted it was drawing
+too much attention at the bottom-left. Changed to `var(--text-secondary)`
+(#7c7b79). The trigger recedes without disappearing.
+
+**Gold pulse on loading removed**
+During the waiting phase (API call in progress), the situation text was
+pulsing and then turning gold (#b89a6e) at beat1 before the response
+arrived. Oscar flagged this. The gold transition was removed — text stays
+`var(--text)` throughout waiting and only the animation class (opacity
+pulse) runs. The gold step added complexity to the beat sequence without
+adding clarity.
+
+**Response perspective body text**
+Font size changed from 17px to 19px. Font weight changed from 400 to 500.
+The paragraph was disappearing between the reframe and the action line.
+The weight change pulls it into the reading path without competing with
+the action line's size.
+
+**Chevron micro-animation**
+Added `transform: rotate(180deg)` on `.mode-trigger--open svg` and
+`.mode-trigger:hover svg` with `transition: transform 350ms ease-in-out`.
+350ms was chosen after testing 200ms (too mechanical) and discussing the
+range — it needed to feel smooth rather than snappy because the popover
+is a composed surface, not a simple disclosure.
+
+---
+
+### Recurring build problem: CSS stacking contexts
+
+This session hit the stacking context problem three times:
+
+1. Click-outside not working on desktop: the overlay was inside the
+   mode-selector-row, which the `response-enter` animation (opacity)
+   turns into a stacking context. Fixed by switching to document listener.
+
+2. Overlay not visible on mobile: overlay was inside the fixed footer
+   (z-10), so z-99 was scoped within that context and lost. Fixed by
+   moving the overlay element to the root of ResponseScreen's return.
+
+3. Sheet appearing behind overlay on mobile: the mode-selector-row
+   (position: fixed; z-index: 10) creates its own stacking context.
+   mode-options (z-100) is trapped inside it. Overlay at root level
+   (z-99) wins. Fixed by adding `style={open ? { zIndex: 100 } : undefined}`
+   to the mode-selector-row so it outranks the overlay when open.
+
+The pattern: CSS animations with `opacity`, `position: fixed` with
+`z-index`, and element nesting all create stacking context traps. The
+reliable fix is to render shared surfaces (overlays, sheets, popovers)
+at the topmost React component level, or to promote the containing
+element's z-index at the moment of interaction.
+
+---
+
+### Decisions made
+
+- Tab strip → dropdown/sheet pattern [shipped]
+- Mode descriptors: one line per mode, written and locked [shipped]
+- Hover state: F0EBE2 / #3A322B [shipped]
+- Mobile close: X icon (Lucide, size 18, strokeWidth 1.5) [shipped]
+- Mode trigger: text-secondary colour [shipped]
+- Loading gold beat removed [shipped]
+- Perspective: 19px / weight 500 [shipped]
+- Chevron animation: 350ms ease-in-out [shipped]
+- Enter submits, Shift+Enter newlines [shipped]
+- Overlay at React root level to escape stacking contexts [shipped]
+- mode-selector-row z-index promoted to 100 when open [shipped]
+
+---
+
+### Rejected decisions
+
+- Dividers between option rows — visual noise, removed in Paper before build
+- "Cancel" text label on mobile sheet close button — replaced with X icon
+  to match the Paper design intent
+- Gold transition during loading pulse — removed, added complexity
+  without adding user value
+
+---
+
+### Known issues
+
+**Blockers**
+- None. App working end to end.
+
+**Polish**
+- Compare screen not yet updated to reflect the new pattern — Start again
+  and Compare modes buttons from the old tab strip may still be present;
+  verify in build
+- Type scale clamp values not yet tested in production (carried from 11 May)
+- Sentence limits not yet tested against live API (carried from 23 April)
+- Error banner position (carried from 21 April)
+- Gold action line in Compare screen live build (carried from 21 April)
+- Mobile Compare stacked view spacing (carried from 21 April)
+- Wordmark navigation edge case during loading state (carried from 23 April)
+
+---
+
+### Next steps
+
+1. Verify Compare screen in live build — confirm old tab strip artefacts
+   are not present
+2. Test mode switching in both desktop and mobile Safari
+3. Confirm Paper MCP connected, run Phase 0 diff
+4. Test type scale clamp values in production
+5. Test sentence limits with live Blunt scenario
