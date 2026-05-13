@@ -838,3 +838,36 @@ element's z-index at the moment of interaction.
 3. Confirm Paper MCP connected, run Phase 0 diff
 4. Test type scale clamp values in production
 5. Test sentence limits with live Blunt scenario
+
+---
+
+### Oscar's note — end of session
+
+Reviewed four tab strip variants (segmented track, underline tabs, refined
+pills) against the core constraint that differentiation must happen at the
+response state. Identified interactivity clarity as the threshold problem
+across three of four variants — inactive tabs reading as labels rather than
+controls. Resolved by moving to a dropdown pattern: resting state shows
+current mode name with chevron, opens to a sheet (mobile) or popover
+(desktop) with mode name, descriptor, and tick on selected option.
+
+Descriptor copy iterated from functional labels to register-consistent
+lines: "The question behind the question", "No softening. Just the truth",
+"A path forward, not a place to sit". The internal echo between Reflective
+and Practical ("question behind" / "not a place to sit") was intentional.
+
+Typography: body text identified as Cormorant at 17px/400 — hairline
+strokes insufficiently legible on warm off-white at body size. Resolved at
+19px/500. Noted that Cormorant is a display typeface doing body text work;
+acceptable at this size but worth revisiting if legibility complaints emerge
+from non-retina users.
+
+Placeholder copy resolved to "Start anywhere" — no punctuation. Ellipsis
+rejected as implying hesitation; full stop rejected as over-formal for a
+placeholder context.
+
+Chevron micro animation added: 180-degree clockwise rotation on hover and
+on open, 200ms ease-in-out, CSS transition. Stays up while dropdown is
+open, returns on close.
+
+**v1 shipped.**
