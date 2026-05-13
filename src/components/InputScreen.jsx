@@ -87,7 +87,7 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
           }}
           onKeyDown={handleKeyDown}
           disabled={loading}
-          placeholder="Describe what's weighing on you…"
+          placeholder="Start anywhere"
           style={{
             background: 'transparent',
             border: 'none',
