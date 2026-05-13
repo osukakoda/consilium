@@ -18,7 +18,11 @@ export default function InputScreen({ situation, onChange, onSubmit, loading, er
   }, [situation])
 
   function handleKeyDown(e) {
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey) && canSubmit) onSubmit()
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      if (canSubmit) onSubmit()
+    }
+    // Shift+Enter: browser default inserts a newline — no handler needed
   }
 
   return (
