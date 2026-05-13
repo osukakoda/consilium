@@ -18,11 +18,14 @@ function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+const CLOSE_DURATION = 350
+
 // phase: 'waiting' → 'beat1' (gold, 300ms) → 'beat2' (reposition, 200ms) → 'beat3' (response in)
 export default function ResponseScreen({ data, situation, waiting, onBack }) {
   const [active, setActive] = useState('reflective')
   const [phase, setPhase] = useState('waiting')
   const [open, setOpen] = useState(false)
+  const [closing, setClosing] = useState(false)
   const selectorRef = useRef(null)
 
   useEffect(() => {
@@ -35,15 +38,24 @@ export default function ResponseScreen({ data, situation, waiting, onBack }) {
     }
   }, [waiting, data])
 
+  // Animate out, then unmount — called everywhere the menu needs to close
+  function closeMenu() {
+    setClosing(true)
+    setTimeout(() => {
+      setOpen(false)
+      setClosing(false)
+    }, CLOSE_DURATION)
+  }
+
   // Close on click outside (desktop) or Escape (both)
   useEffect(() => {
     if (!open) return
     function onPointerDown(e) {
       if (selectorRef.current && !selectorRef.current.contains(e.target)) {
-        setOpen(false)
+        closeMenu()
       }
     }
-    function onKey(e) { if (e.key === 'Escape') setOpen(false) }
+    function onKey(e) { if (e.key === 'Escape') closeMenu() }
     // Defer so the click that opened the dropdown doesn't immediately close it
     const timer = setTimeout(() => {
       document.addEventListener('pointerdown', onPointerDown)
@@ -58,7 +70,7 @@ export default function ResponseScreen({ data, situation, waiting, onBack }) {
 
   function handleSelect(tone) {
     setActive(tone)
-    setOpen(false)
+    closeMenu()
     window.scrollTo(0, 0)
   }
 
@@ -70,14 +82,17 @@ export default function ResponseScreen({ data, situation, waiting, onBack }) {
     phase === 'beat2'   && 'situation-centred--exiting',
   ].filter(Boolean).join(' ')
 
+  // Chevron rotates back down the moment close begins, in sync with exit animation
+  const triggerOpen = open && !closing
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100vh' }}>
 
       {/* Overlay — rendered at root level so it escapes the fixed footer's stacking context */}
       {open && phase === 'beat3' && (
         <div
-          className="mode-overlay"
-          onPointerDown={() => setOpen(false)}
+          className={`mode-overlay${closing ? ' mode-overlay--closing' : ''}`}
+          onPointerDown={closeMenu}
           aria-hidden="true"
         />
       )}
@@ -204,8 +219,8 @@ export default function ResponseScreen({ data, situation, waiting, onBack }) {
 
                 {/* Left: current mode + chevron */}
                 <button
-                  className={`mode-trigger${open ? ' mode-trigger--open' : ''}`}
-                  onClick={() => setOpen(o => !o)}
+                  className={`mode-trigger${triggerOpen ? ' mode-trigger--open' : ''}`}
+                  onClick={() => open ? closeMenu() : setOpen(true)}
                   aria-haspopup="listbox"
                   aria-expanded={open}
                 >
@@ -221,9 +236,9 @@ export default function ResponseScreen({ data, situation, waiting, onBack }) {
 
                 {/* Options — popover on desktop, bottom sheet on mobile */}
                 {open && (
-                  <div className="mode-options" role="listbox">
+                  <div className={`mode-options${closing ? ' mode-options--closing' : ''}`} role="listbox">
                     {/* Close button — mobile sheet only */}
-                    <button className="mode-sheet-close" onClick={() => setOpen(false)} aria-label="Close">
+                    <button className="mode-sheet-close" onClick={closeMenu} aria-label="Close">
                       <X size={18} strokeWidth={1.5} />
                     </button>
                     {TONES.map(tone => (

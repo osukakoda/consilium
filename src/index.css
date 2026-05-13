@@ -310,6 +310,32 @@ body {
   pointer-events: none; /* desktop: visual only, close handled by document listener */
 }
 
+/* ── Mode selector — popover / sheet animations ─────────────── */
+@keyframes popover-enter {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes popover-exit {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+@keyframes sheet-enter {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes sheet-exit {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+@keyframes overlay-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes overlay-exit {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 /* ── Mode selector — options (popover desktop / sheet mobile) ── */
 .mode-options {
   position: absolute;
@@ -322,6 +348,11 @@ body {
   border-radius: 12px;
   overflow: hidden;
   z-index: 100;
+  animation: popover-enter 350ms ease-in-out forwards;
+}
+
+.mode-options--closing {
+  animation: popover-exit 350ms ease-in-out forwards;
 }
 
 .mode-option-row {
@@ -411,6 +442,11 @@ body {
   .mode-overlay {
     background: rgba(0, 0, 0, 0.65);
     pointer-events: auto; /* mobile: tapping overlay closes the sheet */
+    animation: overlay-enter 350ms ease-in-out forwards;
+  }
+
+  .mode-overlay--closing {
+    animation: overlay-exit 350ms ease-in-out forwards;
   }
 
   .mode-options {
@@ -425,6 +461,11 @@ body {
     box-shadow: none;
     padding-bottom: max(24px, env(safe-area-inset-bottom));
     background: var(--card);
+    animation: sheet-enter 350ms ease-in-out forwards;
+  }
+
+  .mode-options--closing {
+    animation: sheet-exit 350ms ease-in-out forwards;
   }
 
   .mode-sheet-close {
